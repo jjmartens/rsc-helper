@@ -35,6 +35,8 @@ def book(tijdObject):
         })
     return (response)
 
+
+
 #Gebruik lijst.txt om momenten te plaatsen die je wil reserveren.
 #Per regel dd-mm-yy,bu:bm,eu:em,ks
 #dd = dag, mm = maand, yy = jaar, bu = vroegste uur, bm is vroegste minuut, eu het uiterste uur, em de uiterste minuut, ks in {zw, sq} (zw voor zwemmen, sq voor squashen)
@@ -88,12 +90,13 @@ else:
             else:
                 keuzeSport = "zwemmen"
 
-            vanaf = datetime.datetime(year = jaar, month = maand, day = dag, hour = beginUur, minute = beginMin, second=0, microsecond = 0)
-            tot = datetime.datetime(year = jaar, month = maand, day = dag, hour = eindUur, minute = eindMin, second=0, microsecond = 0)
-
+            vanaf =     datetime.datetime(year = jaar, month = maand, day = dag, hour = beginUur, minute = beginMin, second=0, microsecond = 0)
+            tot =       datetime.datetime(year = jaar, month = maand, day = dag, hour = eindUur, minute = eindMin, second=0, microsecond = 0)
+            
             for tijd in tijden:
                 startTijd = datetime.datetime.fromtimestamp(int(tijd['start']))
-                if (startTijd > vanaf and startTijd < tot):
+                if (startTijd >= vanaf and startTijd < tot):
+                    print(tijd['poolNaam'], keuzeSport, tijd['inschrijvingen'])
                     if(int(tijd['inschrijvingen']) < 10 and tijd['poolNaam'] == "zwemmen" and keuzeSport == "zwemmen"):
                         print ("Er zijn plekken vrij op tijd {}".format(startTijd))
                         booking = book(tijd).json()
